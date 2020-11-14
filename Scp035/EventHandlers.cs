@@ -12,8 +12,22 @@ namespace Scp035
         public EventHandlers()
         {
             Server.Get.Events.Player.PlayerPickUpItemEvent += Pickup;
+            Server.Get.Events.Player.PlayerItemUseEvent += Use;
+            Server.Get.Events.Player.PlayerShootEvent += Shoot;
             Server.Get.Events.Round.RoundStartEvent += Start;
             Server.Get.Events.Round.RoundRestartEvent += Restart;
+        }
+
+        private void Shoot(Synapse.Api.Events.SynapseEventArguments.PlayerShootEventArgs ev)
+        {
+            if (IsScp035Item(ev.Weapon))
+                ev.Allow = false;
+        }
+
+        private void Use(Synapse.Api.Events.SynapseEventArguments.PlayerItemInteractEventArgs ev)
+        {
+            if (IsScp035Item(ev.CurrentItem))
+                ev.Allow = false;
         }
 
         private CoroutineHandle _respawn;
@@ -32,7 +46,7 @@ namespace Scp035
             }
         }
 
-        private bool IsScp035ID(SynapseItem item) => item.Name.Contains("Scp035-Item-");
+        private bool IsScp035Item(SynapseItem item) => item.Name.Contains("Scp035-Item-");
 
         public void Spawn035Item()
         {
@@ -41,7 +55,7 @@ namespace Scp035
             if (Server.Get.GetPlayers(x => x.RoleID == (int)RoleType.Spectator && !x.OverWatch).Count < 1)
                 return;
 
-            for (int i = PluginClass.Config.Scp035ItemsAmount - Map.Get.Items.Where(x => IsScp035ID(x)).Count(); i > 0; i--)
+            for (int i = PluginClass.Config.Scp035ItemsAmount - Map.Get.Items.Where(x => IsScp035Item(x)).Count(); i > 0; i--)
             {
                 if (PluginClass.Config.Possible035Items.Count < 1) return;
 
@@ -57,16 +71,16 @@ namespace Scp035
         private void RemoveScp035Items(bool clearinventory = false)
         {
             if (clearinventory)
-                foreach (var item in Map.Get.Items.Where(x => IsScp035ID(x)).ToArray())
+                foreach (var item in Map.Get.Items.Where(x => IsScp035Item(x)).ToArray())
                     item.Destroy();
             else
-                foreach (var item in Map.Get.Items.Where(x => IsScp035ID(x) && x.ItemHolder == null).ToArray())
+                foreach (var item in Map.Get.Items.Where(x => IsScp035Item(x) && x.ItemHolder == null).ToArray())
                     item.Destroy();
         }
 
         private void Pickup(Synapse.Api.Events.SynapseEventArguments.PlayerPickUpItemEventArgs ev)
         {
-            if (IsScp035ID(ev.Item))
+            if (IsScp035Item(ev.Item))
             {
                 if(ev.Player.RealTeam == Team.SCP || ev.Player.RoleID == (int)RoleType.Tutorial)
                     ev.Player.SendBroadcast(8, PluginClass.GetTranslation("035pickup"));
