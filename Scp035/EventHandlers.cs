@@ -60,7 +60,7 @@ namespace Scp035
                 if (PluginClass.Config.Possible035Items.Count < 1) return;
 
                 var type = PluginClass.Config.Possible035Items.ElementAt(UnityEngine.Random.Range(0, PluginClass.Config.Possible035Items.Count));
-                var items = Map.Get.Items.Where(x => x.ItemHolder == null);
+                var items = Map.Get.Items.Where(x => x.State == Synapse.Api.Enum.ItemState.Map);
                 var pos = items.ElementAt(UnityEngine.Random.Range(0, items.Count())).Position;
 
                 var item = new SynapseItem(type + 100, 0f, 0, 0, 0);
@@ -74,7 +74,7 @@ namespace Scp035
                 foreach (var item in Map.Get.Items.Where(x => IsScp035Item(x)).ToArray())
                     item.Destroy();
             else
-                foreach (var item in Map.Get.Items.Where(x => IsScp035Item(x) && x.ItemHolder == null).ToArray())
+                foreach (var item in Map.Get.Items.Where(x => IsScp035Item(x) && x.State == Synapse.Api.Enum.ItemState.Map).ToArray())
                     item.Destroy();
         }
 
