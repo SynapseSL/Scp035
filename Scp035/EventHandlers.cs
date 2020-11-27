@@ -15,6 +15,13 @@ namespace Scp035
             Server.Get.Events.Player.PlayerItemUseEvent += Use;
             Server.Get.Events.Round.RoundStartEvent += Start;
             Server.Get.Events.Round.RoundRestartEvent += Restart;
+            Server.Get.Events.Player.PlayerDeathEvent += Death;
+        }
+
+        private void Death(Synapse.Api.Events.SynapseEventArguments.PlayerDeathEventArgs ev)
+        {
+            if (ev.Victim.RoleID == 35)
+                Map.Get.AnnounceScpDeath("0 3 5");
         }
 
         private void Use(Synapse.Api.Events.SynapseEventArguments.PlayerItemInteractEventArgs ev)

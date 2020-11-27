@@ -1,5 +1,6 @@
 ﻿using MEC;
 using Synapse.Api;
+using System.Collections.Generic;
 
 namespace Scp035
 {
@@ -13,6 +14,11 @@ namespace Scp035
         public override int GetRoleID() => 35;
 
         public override string GetRoleName() => "Scp035";
+
+        public override List<Team> GetFriends()
+        {
+            return PluginClass.Config.ff ? new List<Team>() : new List<Team> { Team.SCP };
+        }
 
         public override Team GetTeam() => Team.SCP;
 
@@ -42,8 +48,6 @@ namespace Scp035
             Player.Health = PluginClass.Config.Scp035Health;
             Player.MaxHealth = PluginClass.Config.Scp035Health;
             Player.DisplayInfo = $"<color={PluginClass.Config.DisplayColor}>{PluginClass.Config.DisplayName}</color>";
-            Player.RankName = PluginClass.Config.DisplayName;
-            Player.RankColor = PluginClass.Config.DisplayColor;
         }
 
         public override void DeSpawn() => Player.DisplayInfo = "";

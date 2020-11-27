@@ -26,5 +26,8 @@ namespace Scp035
 
         [Description("The interval in which the mask should change its position")]
         public float PickupSpawnInterval = 30f;
+
+        [Description("If Enabled Scp035 can Hurt Scps(Guns,Generator,FemurBreaker,etc.)")]
+        public bool ff = false;
     }
 }
