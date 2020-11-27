@@ -13,15 +13,8 @@ namespace Scp035
         {
             Server.Get.Events.Player.PlayerPickUpItemEvent += Pickup;
             Server.Get.Events.Player.PlayerItemUseEvent += Use;
-            Server.Get.Events.Player.PlayerShootEvent += Shoot;
             Server.Get.Events.Round.RoundStartEvent += Start;
             Server.Get.Events.Round.RoundRestartEvent += Restart;
-        }
-
-        private void Shoot(Synapse.Api.Events.SynapseEventArguments.PlayerShootEventArgs ev)
-        {
-            if (IsScp035Item(ev.Weapon))
-                ev.Allow = false;
         }
 
         private void Use(Synapse.Api.Events.SynapseEventArguments.PlayerItemInteractEventArgs ev)
