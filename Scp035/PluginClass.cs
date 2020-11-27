@@ -40,7 +40,9 @@ namespace Scp035
             {
                 {"035pickup","This Item is an Scp035 Item, so if you drop it and a other Player takes it, Scp035 will take the player as his host" },
                 {"survived035" , "This was Scp035 but you have survived it" },
-                {"035interact","You can't use a Scp-035 Item for any interaction with it!" }
+                {"035interact","You can't use a Scp-035 Item for any interaction with it!" },
+                {"pickup035","<b>You have picked up <color=red>Scp-035</color>.</b>" },
+                {"spawn035","<b>You are <color=red>SCP-035</color></b>" }
             };
             Translation.CreateTranslations(translation);
             trans = Translation;

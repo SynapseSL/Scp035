@@ -110,7 +110,7 @@ namespace Scp035
                         player = players.ElementAt(UnityEngine.Random.Range(0, players.Count));
 
                     player.CustomRole = new Scp035PlayerScript(ev.Player);
-                    ev.Item.Destroy();
+                    RemoveScp035Items(true);
                 }
             }
         }

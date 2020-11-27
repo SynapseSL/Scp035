@@ -43,11 +43,15 @@ namespace Scp035
                 Player.Ammo9 = _target.Ammo9;
 
                 _target.RoleID = (int)RoleType.Spectator;
+
+                _target.SendBroadcast(5, PluginClass.GetTranslation("pickup035"));
             }
 
             Player.Health = PluginClass.Config.Scp035Health;
             Player.MaxHealth = PluginClass.Config.Scp035Health;
             Player.DisplayInfo = $"<color={PluginClass.Config.DisplayColor}>{PluginClass.Config.DisplayName}</color>";
+
+            Player.SendBroadcast(5, PluginClass.GetTranslation("spawn035"));
         }
 
         public override void DeSpawn() => Player.DisplayInfo = "";
