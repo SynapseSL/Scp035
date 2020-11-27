@@ -27,7 +27,10 @@ namespace Scp035
         private void Use(Synapse.Api.Events.SynapseEventArguments.PlayerItemInteractEventArgs ev)
         {
             if (IsScp035Item(ev.CurrentItem))
+            {
                 ev.Allow = false;
+                ev.Player.GiveTextHint(PluginClass.GetTranslation("035interact"));
+            }
         }
 
         private CoroutineHandle _respawn;

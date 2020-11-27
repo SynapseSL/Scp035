@@ -39,7 +39,8 @@ namespace Scp035
             var translation = new Dictionary<string, string>
             {
                 {"035pickup","This Item is an Scp035 Item, so if you drop it and a other Player takes it, Scp035 will take the player as his host" },
-                {"survived035" , "This was Scp035 but you have survived it" }
+                {"survived035" , "This was Scp035 but you have survived it" },
+                {"035interact","You can't use a Scp-035 Item for any interaction with it!" }
             };
             Translation.CreateTranslations(translation);
             trans = Translation;

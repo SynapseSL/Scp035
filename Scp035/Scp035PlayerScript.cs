@@ -41,10 +41,11 @@ namespace Scp035
 
             Player.Health = PluginClass.Config.Scp035Health;
             Player.MaxHealth = PluginClass.Config.Scp035Health;
-            Player.RankName = PluginClass.Config.BadgeName;
-            Player.RankColor = PluginClass.Config.BadgeColor;
+            Player.DisplayInfo = $"<color={PluginClass.Config.DisplayColor}>{PluginClass.Config.DisplayName}</color>";
+            Player.RankName = PluginClass.Config.DisplayName;
+            Player.RankColor = PluginClass.Config.DisplayColor;
         }
 
-        public override void DeSpawn() => Player.RefreshPermission(false);
+        public override void DeSpawn() => Player.DisplayInfo = "";
     }
 }
