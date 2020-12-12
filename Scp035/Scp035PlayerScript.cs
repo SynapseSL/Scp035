@@ -34,7 +34,7 @@ namespace Scp035
                 foreach (var item in _target.Inventory.Items)
                 {
                     item.Despawn();
-                    Player.Inventory.Items.Add(item);
+                    item.PickUp(Player);
                 }
 
                 Timing.CallDelayed(0.2f, () => Player.Position = _target.Position);
