@@ -100,7 +100,7 @@ namespace Scp035
                         return;
                     }
 
-                    players = players.OrderByDescending(x => x.DeathTime).ToList();
+                    players = players.OrderBy(x => x.DeathTime).ToList();
 
                     Player player;
 
