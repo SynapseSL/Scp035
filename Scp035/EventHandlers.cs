@@ -22,6 +22,9 @@ namespace Scp035
         {
             if (ev.Victim.RoleID == 35)
                 Map.Get.AnnounceScpDeath("0 3 5");
+
+            if (ev.Victim != ev.Killer && ev.Killer?.RoleID == 35)
+                ev.Victim.OpenReportWindow(PluginClass.GetTranslation("killedby035"));
         }
 
         private void Use(Synapse.Api.Events.SynapseEventArguments.PlayerItemInteractEventArgs ev)

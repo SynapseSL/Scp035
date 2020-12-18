@@ -12,7 +12,7 @@ namespace Scp035
         SynapseMajor = SynapseController.SynapseMajor,
         SynapseMinor = SynapseController.SynapseMinor,
         SynapsePatch = SynapseController.SynapsePatch,
-        Version = "v.1.0.1"
+        Version = "v.1.0.2"
         )]
     public class PluginClass : AbstractPlugin
     {
@@ -42,7 +42,8 @@ namespace Scp035
                 {"survived035" , "This was Scp035 but you have survived it" },
                 {"035interact","You can't use a Scp-035 Item for any interaction with it!" },
                 {"pickup035","<b>You have picked up <color=red>Scp-035</color>.</b>" },
-                {"spawn035","<b>You are <color=red>SCP-035</color></b>" }
+                {"spawn035","<b>You are <color=red>SCP-035</color></b>" },
+                {"killedby035","<b>You was killed by <color=red>SCP</color>-035</b>" }
             };
             Translation.CreateTranslations(translation);
             trans = Translation;
