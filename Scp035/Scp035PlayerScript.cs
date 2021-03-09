@@ -6,7 +6,7 @@ namespace Scp035
 {
     public class Scp035PlayerScript : Synapse.Api.Roles.Role
     {
-        private Player _target;
+        private readonly Player _target;
 
         public Scp035PlayerScript() { }
         public Scp035PlayerScript(Player target) => _target = target;
@@ -15,12 +15,9 @@ namespace Scp035
 
         public override string GetRoleName() => "Scp035";
 
-        public override List<Team> GetFriends()
-        {
-            return PluginClass.Config.ff ? new List<Team>() : new List<Team> { Team.SCP };
-        }
+        public override List<int> GetFriendsID() => PluginClass.Config.ff ? new List<int>() : new List<int> { (int)Team.SCP };
 
-        public override Team GetTeam() => Team.SCP;
+        public override int GetTeamID() => (int)Team.SCP;
 
         public override void Spawn()
         {
@@ -44,16 +41,20 @@ namespace Scp035
 
                 _target.RoleID = (int)RoleType.Spectator;
 
-                _target.SendBroadcast(5, PluginClass.GetTranslation("pickup035"));
+                _target.SendBroadcast(5, PluginClass.Translation.ActiveTranslation.Pickup035);
             }
 
             Player.Health = PluginClass.Config.Scp035Health;
             Player.MaxHealth = PluginClass.Config.Scp035Health;
             Player.DisplayInfo = $"<color={PluginClass.Config.DisplayColor}>{PluginClass.Config.DisplayName}</color>";
 
-            Player.SendBroadcast(5, PluginClass.GetTranslation("spawn035"));
+            Player.SendBroadcast(5, PluginClass.Translation.ActiveTranslation.Spawn035);
         }
 
-        public override void DeSpawn() => Player.DisplayInfo = "";
+        public override void DeSpawn()
+        {
+            Player.DisplayInfo = "";
+            Map.Get.AnnounceScpDeath("0 3 5");
+        }
     }
 }

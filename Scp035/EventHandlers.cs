@@ -20,11 +20,8 @@ namespace Scp035
 
         private void Death(Synapse.Api.Events.SynapseEventArguments.PlayerDeathEventArgs ev)
         {
-            if (ev.Victim.RoleID == 35)
-                Map.Get.AnnounceScpDeath("0 3 5");
-
             if (ev.Victim != ev.Killer && ev.Killer?.RoleID == 35)
-                ev.Victim.OpenReportWindow(PluginClass.GetTranslation("killedby035"));
+                ev.Victim.OpenReportWindow(PluginClass.Translation.ActiveTranslation.KilledBy035);
         }
 
         private void Use(Synapse.Api.Events.SynapseEventArguments.PlayerItemInteractEventArgs ev)
@@ -32,7 +29,43 @@ namespace Scp035
             if (IsScp035Item(ev.CurrentItem))
             {
                 ev.Allow = false;
-                ev.Player.GiveTextHint(PluginClass.GetTranslation("035interact"));
+                ev.Player.GiveTextHint(PluginClass.Translation.ActiveTranslation.InteractWith035);
+            }
+        }
+
+        private bool IsScp035Item(SynapseItem item) => item != null && item.Name.Contains("Scp035-Item-");
+
+        private void Pickup(Synapse.Api.Events.SynapseEventArguments.PlayerPickUpItemEventArgs ev)
+        {
+            if (IsScp035Item(ev.Item))
+            {
+                if(!SynapseExtensions.CanHarmScp(ev.Player) || ev.Player.RoleID == (int)RoleType.Tutorial)
+                    ev.Player.SendBroadcast(8, PluginClass.Translation.ActiveTranslation.ScpPickup035);
+                else
+                {
+                    ev.Allow = false;
+
+                    var players = Server.Get.GetPlayers(x => x.RoleID == (int)RoleType.Spectator && !x.OverWatch);
+
+                    if(players.Count == 0)
+                    {
+                        ev.Player.SendBroadcast(8, PluginClass.Translation.ActiveTranslation.Survived035);
+                        RemoveScp035Items(true);
+                        return;
+                    }
+
+                    players = players.OrderBy(x => x.DeathTime).ToList();
+
+                    Player player;
+
+                    if (PluginClass.Config.DeathTime)
+                        player = players.FirstOrDefault();
+                    else
+                        player = players.ElementAt(UnityEngine.Random.Range(0, players.Count));
+
+                    player.CustomRole = new Scp035PlayerScript(ev.Player);
+                    RemoveScp035Items(true);
+                }
             }
         }
 
@@ -44,15 +77,13 @@ namespace Scp035
 
         private IEnumerator<float> Respawn035Items()
         {
-            for(; ; )
+            for (; ; )
             {
                 if (!Server.Get.Players.Any(x => x.RoleID == 35))
                     Spawn035Item();
                 yield return Timing.WaitForSeconds(PluginClass.Config.PickupSpawnInterval);
             }
         }
-
-        private bool IsScp035Item(SynapseItem item) => item.Name.Contains("Scp035-Item-");
 
         public void Spawn035Item()
         {
@@ -82,40 +113,6 @@ namespace Scp035
             else
                 foreach (var item in Map.Get.Items.Where(x => IsScp035Item(x) && x.State == Synapse.Api.Enum.ItemState.Map).ToArray())
                     item.Destroy();
-        }
-
-        private void Pickup(Synapse.Api.Events.SynapseEventArguments.PlayerPickUpItemEventArgs ev)
-        {
-            if (IsScp035Item(ev.Item))
-            {
-                if(ev.Player.RealTeam == Team.SCP || ev.Player.RoleID == (int)RoleType.Tutorial)
-                    ev.Player.SendBroadcast(8, PluginClass.GetTranslation("035pickup"));
-                else
-                {
-                    ev.Allow = false;
-
-                    var players = Server.Get.GetPlayers(x => x.RoleID == (int)RoleType.Spectator && !x.OverWatch);
-
-                    if(players.Count == 0)
-                    {
-                        ev.Player.SendBroadcast(8, PluginClass.GetTranslation("survived035"));
-                        RemoveScp035Items(true);
-                        return;
-                    }
-
-                    players = players.OrderBy(x => x.DeathTime).ToList();
-
-                    Player player;
-
-                    if (PluginClass.Config.DeathTime)
-                        player = players.FirstOrDefault();
-                    else
-                        player = players.ElementAt(UnityEngine.Random.Range(0, players.Count));
-
-                    player.CustomRole = new Scp035PlayerScript(ev.Player);
-                    RemoveScp035Items(true);
-                }
-            }
         }
     }
 }

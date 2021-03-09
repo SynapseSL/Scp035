@@ -1,6 +1,7 @@
 ﻿using Synapse;
 using Synapse.Api.Plugin;
 using System.Collections.Generic;
+using Synapse.Translation;
 
 namespace Scp035
 {
@@ -9,17 +10,18 @@ namespace Scp035
         Author = "Dimenzio",
         Description = "Adds the Role Scp035 to the Game",
         LoadPriority = 1,
-        SynapseMajor = SynapseController.SynapseMajor,
-        SynapseMinor = SynapseController.SynapseMinor,
-        SynapsePatch = SynapseController.SynapsePatch,
-        Version = "v.1.0.2"
+        SynapseMajor = 2,
+        SynapseMinor = 5,
+        SynapsePatch = 3,
+        Version = "v.1.1.0"
         )]
     public class PluginClass : AbstractPlugin
     {
-        private static Translation trans;
-
         [Synapse.Api.Plugin.Config(section = "Scp035")]
         public static Config Config;
+
+        [SynapseTranslation]
+        public static new SynapseTranslation<PluginTranslation> Translation { get; set; }
 
         public override void Load()
         {
@@ -36,21 +38,18 @@ namespace Scp035
                     });
                 }
 
-            var translation = new Dictionary<string, string>
+            Translation.AddTranslation(new PluginTranslation());
+            Translation.AddTranslation(new PluginTranslation
             {
-                {"035pickup","This Item is an Scp035 Item, so if you drop it and a other Player takes it, Scp035 will take the player as his host" },
-                {"survived035" , "This was Scp035 but you have survived it" },
-                {"035interact","You can't use a Scp-035 Item for any interaction with it!" },
-                {"pickup035","<b>You have picked up <color=red>Scp-035</color>.</b>" },
-                {"spawn035","<b>You are <color=red>SCP-035</color></b>" },
-                {"killedby035","<b>You was killed by <color=red>SCP</color>-035</b>" }
-            };
-            Translation.CreateTranslations(translation);
-            trans = Translation;
+                ScpPickup035 = "Du hast <color=red>SCP-035</color> aufgeboben. Gib es einem anderem Spieler damit er zu <color=red>SCP-035</color> wird",
+                Survived035 = "Das war <color=red>SCP-035</color> aber du hast es überlebt",
+                InteractWith035 = "Du kannst nicht mit einem <color=red>SCP-035</color> Item interagieren",
+                Pickup035 = "<b>Du hast <color=red>SCP-035</color> aufgehoben</b>",
+                Spawn035 = "<b>Du bist jetzt <color=red>SCP-035</color></b",
+                KilledBy035 = "<b>Du wurdest von <color=red>SCP-035</color> umgebracht</b>"
+            }, "GERMAN");
 
             new EventHandlers();
         }
-
-        public static string GetTranslation(string key) => trans.GetTranslation(key);
     }
 }
