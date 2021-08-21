@@ -1,5 +1,6 @@
 ﻿using MEC;
 using Synapse.Api;
+using Synapse.Api.Enum;
 using System.Collections.Generic;
 
 namespace Scp035
@@ -22,7 +23,7 @@ namespace Scp035
         public override void Spawn()
         {
             if(_target == null)
-                Player.RoleType = RoleType.ChaosInsurgency;
+                Player.RoleType = RoleType.ChaosRifleman;
             else
             {
                 Player.RoleType = _target.RoleType;
@@ -35,9 +36,9 @@ namespace Scp035
                 }
 
                 Timing.CallDelayed(0.2f, () => Player.Position = _target.Position);
-                Player.Ammo5 = _target.Ammo5;
-                Player.Ammo7 = _target.Ammo7;
-                Player.Ammo9 = _target.Ammo9;
+
+                foreach (var type in (AmmoType[])System.Enum.GetValues(typeof(AmmoType)))
+                    Player.AmmoBox[type] = _target.AmmoBox[type];
 
                 _target.RoleID = (int)RoleType.Spectator;
 

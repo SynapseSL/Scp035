@@ -1,10 +1,10 @@
-﻿using Synapse.Config;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Collections.Generic;
+using Synapse.Config;
 
 namespace Scp035
 {
-    public class Config : AbstractConfigSection
+    public class PluginConfig : AbstractConfigSection
     {
         [Description("The Health of Scp035")]
         public int Scp035Health = 150;

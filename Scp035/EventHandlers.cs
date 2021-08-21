@@ -1,9 +1,9 @@
-﻿using Synapse;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MEC;
+using Synapse;
 using Synapse.Api;
 using Synapse.Api.Items;
-using System.Linq;
-using System.Collections.Generic;
-using MEC;
 
 namespace Scp035
 {
@@ -100,7 +100,7 @@ namespace Scp035
                 var items = Map.Get.Items.Where(x => x.State == Synapse.Api.Enum.ItemState.Map);
                 var pos = items.ElementAt(UnityEngine.Random.Range(0, items.Count())).Position;
 
-                var item = new SynapseItem(type + 100, 0f, 0, 0, 0);
+                var item = new SynapseItem(type + 100);
                 item.Drop(pos);
             }
         }

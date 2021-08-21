@@ -1,6 +1,5 @@
 ﻿using Synapse;
 using Synapse.Api.Plugin;
-using System.Collections.Generic;
 using Synapse.Translation;
 
 namespace Scp035
@@ -13,12 +12,12 @@ namespace Scp035
         SynapseMajor = 2,
         SynapseMinor = 5,
         SynapsePatch = 3,
-        Version = "v.1.1.0"
+        Version = "v.1.1.1"
         )]
     public class PluginClass : AbstractPlugin
     {
-        [Synapse.Api.Plugin.Config(section = "Scp035")]
-        public static Config Config;
+        [Config(section = "Scp035")]
+        public static PluginConfig Config;
 
         [SynapseTranslation]
         public static new SynapseTranslation<PluginTranslation> Translation { get; set; }
@@ -45,7 +44,7 @@ namespace Scp035
                 Survived035 = "Das war <color=red>SCP-035</color> aber du hast es überlebt",
                 InteractWith035 = "Du kannst nicht mit einem <color=red>SCP-035</color> Item interagieren",
                 Pickup035 = "<b>Du hast <color=red>SCP-035</color> aufgehoben</b>",
-                Spawn035 = "<b>Du bist jetzt <color=red>SCP-035</color></b",
+                Spawn035 = "<b>Du bist jetzt <color=red>SCP-035</color></b>",
                 KilledBy035 = "<b>Du wurdest von <color=red>SCP-035</color> umgebracht</b>"
             }, "GERMAN");
 
