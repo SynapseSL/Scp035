@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MEC;
+﻿using MEC;
 using Synapse;
 using Synapse.Api;
 using Synapse.Api.Items;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Scp035
 {
@@ -16,6 +16,16 @@ namespace Scp035
             Server.Get.Events.Round.RoundStartEvent += Start;
             Server.Get.Events.Round.RoundRestartEvent += Restart;
             Server.Get.Events.Player.PlayerDeathEvent += Death;
+            Server.Get.Events.Player.PlayerSetClassEvent += Player_PlayerSetClassEvent;
+        }
+
+        private void Player_PlayerSetClassEvent(Synapse.Api.Events.SynapseEventArguments.PlayerSetClassEventArgs ev)
+        {
+            if (ev.Player.RoleID == 35 && ev.Player.CustomRole is Scp035PlayerScript p && p._target != null)
+            {
+                ev.Position = p._target.Position;
+                ev.Rotation = p._target.transform.rotation.eulerAngles.y;
+            }
         }
 
         private void Death(Synapse.Api.Events.SynapseEventArguments.PlayerDeathEventArgs ev)

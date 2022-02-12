@@ -1,5 +1,4 @@
-﻿using MEC;
-using Synapse.Api;
+﻿using Synapse.Api;
 using Synapse.Api.Enum;
 using System.Collections.Generic;
 
@@ -7,7 +6,7 @@ namespace Scp035
 {
     public class Scp035PlayerScript : Synapse.Api.Roles.Role
     {
-        private readonly Player _target;
+        internal readonly Player _target;
 
         public Scp035PlayerScript() { }
         public Scp035PlayerScript(Player target) => _target = target;
@@ -34,8 +33,6 @@ namespace Scp035
                     item.Despawn();
                     item.PickUp(Player);
                 }
-
-                Timing.CallDelayed(0.2f, () => Player.Position = _target.Position);
 
                 foreach (var type in (AmmoType[])System.Enum.GetValues(typeof(AmmoType)))
                     Player.AmmoBox[type] = _target.AmmoBox[type];
