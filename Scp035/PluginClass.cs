@@ -10,9 +10,9 @@ namespace Scp035
         Description = "Adds the Role Scp035 to the Game",
         LoadPriority = 1,
         SynapseMajor = 2,
-        SynapseMinor = 8,
-        SynapsePatch = 3,
-        Version = "v.1.1.2"
+        SynapseMinor = 9,
+        SynapsePatch = 0,
+        Version = "v.1.1.3"
         )]
     public class PluginClass : AbstractPlugin
     {

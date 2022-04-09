@@ -44,7 +44,7 @@ namespace Scp035
 
             Player.Health = PluginClass.Config.Scp035Health;
             Player.MaxHealth = PluginClass.Config.Scp035Health;
-            Player.DisplayInfo = $"<color={PluginClass.Config.DisplayColor}>{PluginClass.Config.DisplayName}</color>";
+            Player.DisplayInfo = PluginClass.Config.DisplayName;
 
             Player.SendBroadcast(5, PluginClass.Translation.ActiveTranslation.Spawn035);
         }

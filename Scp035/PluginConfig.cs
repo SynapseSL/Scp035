@@ -12,9 +12,6 @@ namespace Scp035
         [Description("The text which gets displayed over the Player Name of Scp035")]
         public string DisplayName = "Scp-035";
 
-        [Description("The Color which the text of Scp035 should have")]
-        public string DisplayColor = "red";
-
         [Description("If the Spectator that are the longest time death should become 035")]
         public bool DeathTime = true;
 
