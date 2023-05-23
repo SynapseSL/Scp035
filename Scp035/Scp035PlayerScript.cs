@@ -1,58 +1,106 @@
-﻿using Synapse.Api;
-using Synapse.Api.Enum;
+﻿using Neuron.Core.Meta;
+using Neuron.Core.Plugins;
+using Ninject;
+using PlayerRoles;
+using Synapse3.SynapseModule;
+using Synapse3.SynapseModule.Enums;
+using Synapse3.SynapseModule.Player;
+using Synapse3.SynapseModule.Role;
 using System.Collections.Generic;
 
-namespace Scp035
+namespace Scp035;
+
+[Automatic]
+[Role(
+    Name = "Scp035",
+    Id = 35,
+    TeamId = (uint)Team.SCPs
+)]
+public class Scp035PlayerScript : SynapseRole
 {
-    public class Scp035PlayerScript : Synapse.Api.Roles.Role
+
+    [Inject]
+    public Scp035Plugin Plugin { get; set; }
+
+    public SynapsePlayer Target { get; set; } = null;
+
+    public CustomInfoList.CustomInfoEntry NameEntry { get; private set; }
+
+    public CustomInfoList.CustomInfoEntry RoleEntry { get; private set; }
+
+    public Scp035PlayerScript()
     {
-        internal readonly Player _target;
+        Plugin = Synapse.Get<Scp035Plugin>();
+    }
 
-        public Scp035PlayerScript() { }
-        public Scp035PlayerScript(Player target) => _target = target;
+    public override List<uint> GetFriendsID() => Plugin.Config.ff ? new List<uint>() : new List<uint> { (uint)Team.SCPs };
 
-        public override int GetRoleID() => 35;
-
-        public override string GetRoleName() => "Scp035";
-
-        public override List<int> GetFriendsID() => PluginClass.Config.ff ? new List<int>() : new List<int> { (int)Team.SCP };
-
-        public override int GetTeamID() => (int)Team.SCP;
-
-        public override void Spawn()
+    public override void SpawnPlayer(ISynapseRole previousRole = null, bool spawnLite = false)
+    {
+        if (spawnLite)
         {
-            if(_target == null)
-                Player.RoleType = RoleType.ChaosRifleman;
-            else
+            SetDisplay();
+            return;
+        }
+
+        if (Target == null)
+        {
+            Player.RoleID = (uint)RoleTypeId.ChaosRifleman;
+        }
+        else
+        {
+            Player.Position = Target.Position;
+            Player.ChangeRoleLite(Target.RoleType);
+            Player.Inventory.Clear();
+            foreach (var item in Target.Inventory.Items)
             {
-                Player.RoleType = _target.RoleType;
-
-                Player.Inventory.Clear();
-                foreach (var item in _target.Inventory.Items)
-                {
-                    item.Despawn();
-                    item.PickUp(Player);
-                }
-
-                foreach (var type in (AmmoType[])System.Enum.GetValues(typeof(AmmoType)))
-                    Player.AmmoBox[type] = _target.AmmoBox[type];
-
-                _target.RoleID = (int)RoleType.Spectator;
-
-                _target.SendBroadcast(5, PluginClass.Translation.ActiveTranslation.Pickup035);
+                item.Destroy();
+                item.EquipItem(Player, provideFully: true);
             }
 
-            Player.Health = PluginClass.Config.Scp035Health;
-            Player.MaxHealth = PluginClass.Config.Scp035Health;
-            Player.DisplayInfo = PluginClass.Config.DisplayName;
-
-            Player.SendBroadcast(5, PluginClass.Translation.ActiveTranslation.Spawn035);
+            foreach (var ammoType in (AmmoType[])System.Enum.GetValues(typeof(AmmoType)))
+	        {
+                Player.Inventory.AmmoBox[ammoType] = Target.Inventory.AmmoBox[ammoType];
+            }  
         }
 
-        public override void DeSpawn()
+        Player.Health = Plugin.Config.Scp035Health;
+        Player.MaxHealth = Plugin.Config.Scp035Health;
+
+        SetDisplay();
+    }
+
+    public override void DeSpawn(DeSpawnReason reason)
+    {
+        ClearDisplay();
+    }
+
+    public void SetDisplay()
+    {
+        NameEntry = new CustomInfoList.CustomInfoEntry
         {
-            Player.DisplayInfo = "";
-            Map.Get.AnnounceScpDeath("0 3 5");
-        }
+            Info = base.Player.NicknameSync.HasCustomName ? (base.Player.NicknameSync._displayName + "*") : base.Player.NickName
+        };
+        RoleEntry = new CustomInfoList.CustomInfoEntry
+        {
+            Info = Plugin.Config.DisplayName
+        };
+
+        Player.RemoveDisplayInfo(PlayerInfoArea.Nickname);
+        Player.RemoveDisplayInfo(PlayerInfoArea.Role);
+        Player.RemoveDisplayInfo(PlayerInfoArea.UnitName);
+        Player.RemoveDisplayInfo(PlayerInfoArea.PowerStatus);
+        Player.CustomInfo.Add(NameEntry);
+        Player.CustomInfo.Add(RoleEntry);
+    }
+
+    public void ClearDisplay()
+    {
+        Player.AddDisplayInfo(PlayerInfoArea.Nickname);
+        Player.AddDisplayInfo(PlayerInfoArea.Role);
+        Player.AddDisplayInfo(PlayerInfoArea.UnitName);
+        Player.AddDisplayInfo(PlayerInfoArea.PowerStatus);
+        Player.CustomInfo.Remove(NameEntry);
+        Player.CustomInfo.Remove(RoleEntry);
     }
 }
