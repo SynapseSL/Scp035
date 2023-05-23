@@ -13,10 +13,11 @@ namespace Scp035;
 
 [HeavyModded]
 [Plugin(
-Name = "Scp035",
-Description = "Adds the Role Scp035 to the Game",
-Version = "2.0.0",
-Author = "Dimenzio"
+    Name = "Scp035",
+    Description = "Adds the Role Scp035 to the Game",
+    Version = "2.0.0",
+    Author = "Dimenzio",
+    Repository = "https://github.com/SynapseSL/Scp035"
 )]
 public class Scp035Plugin : ReloadablePlugin<PluginConfig, PluginTranslation>
 {
@@ -109,13 +110,4 @@ public class Scp035Plugin : ReloadablePlugin<PluginConfig, PluginTranslation>
         }
     }
 }
-
-/*
-            ScpPickup035 = "Du hast <color=red>SCP-035</color> aufgeboben. Gib es einem anderem Spieler damit er zu <color=red>SCP-035</color> wird",
-            Survived035 = "Das war <color=red>SCP-035</color> aber du hast es überlebt",
-            InteractWith035 = "Du kannst nicht mit einem <color=red>SCP-035</color> Item interagieren",
-            Pickup035 = "<b>Du hast <color=red>SCP-035</color> aufgehoben</b>",
-            Spawn035 = "<b>Du bist jetzt <color=red>SCP-035</color></b>",
-            KilledBy035 = "<b>Du wurdest von <color=red>SCP-035</color> umgebracht</b>"
-*/
 
