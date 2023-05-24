@@ -11,8 +11,16 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+	</PropertyGroup>
+
     <ItemGroup>
-      <PackageReference Include="SynapseSL" Version="3.0.0-pre1.2" />
+		<PackageReference Include="SynapseSL" Version="3.0.0-pre1.2" />
     </ItemGroup>
 
 </Project>
