@@ -45,7 +45,7 @@ public class Scp035PlayerScript : SynapseRole
 
         if (Target == null)
         {
-            Player.RoleID = (uint)RoleTypeId.ChaosRifleman;
+            Player.RoleType = RoleTypeId.ChaosRifleman;
         }
         else
         {
